@@ -4,7 +4,15 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="text-weight-bold"> Qwitter </q-toolbar-title>
+        <q-toolbar-title class="text-weight-bold"
+          ><span class="gt-sm">Qwitter</span>
+          <q-icon
+            name="fa-solid fa-dove"
+            size="sm"
+            color="primary"
+            class="q-pa-md lt-md header-icon"
+          />
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -65,7 +73,9 @@
         <q-item class="q-pa-md">
           <q-item-section>
             <q-item-label overline class="text-grey">EDUCATION</q-item-label>
-            <q-item-label class="text-weight-bold">Something Amaizing Happened</q-item-label>
+            <q-item-label class="text-weight-bold"
+              >Something Amaizing Happened</q-item-label
+            >
             <q-item-label caption
               >Secondary line text. Lorem ipsum dolor sit amet, consectetur
               adipiscit elit.</q-item-label
@@ -79,7 +89,9 @@
         <q-item class="q-pa-md">
           <q-item-section>
             <q-item-label overline class="text-grey">EDUCATION</q-item-label>
-            <q-item-label class="text-weight-bold">Something Amaizing Happened</q-item-label>
+            <q-item-label class="text-weight-bold"
+              >Something Amaizing Happened</q-item-label
+            >
             <q-item-label caption
               >Secondary line text. Lorem ipsum dolor sit amet, consectetur
               adipiscit elit.</q-item-label
@@ -93,7 +105,9 @@
         <q-item class="q-pa-md">
           <q-item-section>
             <q-item-label overline class="text-grey">EDUCATION</q-item-label>
-            <q-item-label class="text-weight-bold">Something Amaizing Happened</q-item-label>
+            <q-item-label class="text-weight-bold"
+              >Something Amaizing Happened</q-item-label
+            >
             <q-item-label caption
               >Secondary line text. Lorem ipsum dolor sit amet, consectetur
               adipiscit elit.</q-item-label
@@ -135,3 +149,10 @@ export default {
   },
 };
 </script>
+<style lang="sass">
+.header-icon
+  position: absolute
+  bottom: 0
+  left: 50%
+  transform: translateX(-50%);
+</style>
