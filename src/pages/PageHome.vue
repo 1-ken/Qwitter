@@ -49,11 +49,15 @@
             eiusmod<br /><br />tempor incididunt ut labore et dolore magna
             aliqua.
           </q-item-label>
+          <div class="qweet-icons row justify-between q-mt-md">
+            <q-btn flat round size="sm" color="grey" icon="far fa-comment" />
+            <q-btn flat round size="sm" color="grey" icon="fas fa-retweet" />
+            <q-btn flat round size="sm" color="grey" icon="far fa-heart" />
+            <q-btn flat round size="sm" color="grey" icon="fas fa-trash" />
+          </div>
         </q-item-section>
-        
         <q-item-section side top> 1 min ago </q-item-section>
       </q-item>
-
       <q-separator inset="item" />
     </q-list>
   </q-page>
@@ -83,4 +87,6 @@ export default {
 .qweet-content
   word-wrap: break-word !important
   overflow-wrap: break-word !important
+.qweet-icons
+  margin-left: -5px
 </style>
