@@ -5,12 +5,15 @@
         <q-input
           bottom-slots
           v-model="newQweetContent"
-          Placeholder="whats happening"
+          placeholder="whats happening"
           counter
           autogrow
           class="newQweet"
           maxlength="280"
         >
+          <template v-slot:hint>
+            {{ 280 - newQweetContent.length }} characters remaining
+          </template>
           <template v-slot:before>
             <q-avatar size="xl" class="q-mr-sm">
               <img src="https://cdn.quasar.dev/img/avatar5.jpg" />
@@ -21,8 +24,9 @@
       <div class="col col-shrink">
         <q-btn
           class="q-mb-lg"
+          @click="addNewQweet"
           no-caps
-          :disable="!newQweetContent"
+          :disable="!newQweetContent.trim() || newQweetContent.length > 280"
           unelevated
           rounded
           color="primary"
@@ -87,6 +91,13 @@ export default {
   methods: {
     relativeDate(value) {
       return formatDistanceStrict(value, new Date(), { addSuffix: true });
+    },
+    addNewQweet(){
+      let newQweet = {
+        content: this.newQweetContent,
+        date: Date.now()
+      }
+      this.qweet.unshift(newQweet)
     }
   }
 };
