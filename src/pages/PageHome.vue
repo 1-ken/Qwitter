@@ -32,8 +32,11 @@
     </div>
     <q-separator class="divider" size="10px" color="grey-2" />
     <!-- tweetlist -->
-    <q-list>
-      <q-item class="q-pa-md">
+    <q-list separator>
+      <q-item
+        v-for="qweet in qweet"
+        :key="qweet.date"
+        class="q-pa-md">
         <q-item-section avatar>
           <q-avatar size="xl" class="q-mr-sm">
             <img src="https://cdn.quasar.dev/img/avatar5.jpg" />
@@ -45,9 +48,7 @@
             <span class="text-grey-7">@kee_ken</span>
           </q-item-label>
           <q-item-label class="qweet-content text-body1">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod<br /><br />tempor incididunt ut labore et dolore magna
-            aliqua.
+            {{ qweet.content }}
           </q-item-label>
           <div class="qweet-icons row justify-between q-mt-md">
             <q-btn flat round size="sm" color="grey" icon="far fa-comment" />
@@ -56,20 +57,38 @@
             <q-btn flat round size="sm" color="grey" icon="fas fa-trash" />
           </div>
         </q-item-section>
-        <q-item-section side top> 1 min ago </q-item-section>
+        <q-item-section side top> {{ relativeDate(qweet.date) }} </q-item-section>
       </q-item>
       <q-separator inset="item" />
     </q-list>
   </q-page>
 </template>
 <script>
+import { formatDistance } from "date-fns";
 export default {
   name: "PageHome",
   data() {
     return {
       newQweetContent: "",
+      qweet: [
+        {
+          content:
+            "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          date: 1754031132848,
+        },
+        {
+          content:
+            "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          date: 1754031251805,
+        },
+      ],
     };
   },
+  methods: {
+    relativeDate(value) {
+      return formatDistance(value, new Date(), { addSuffix: true });
+    }
+  }
 };
 </script>
 <style lang="sass" scoped>
