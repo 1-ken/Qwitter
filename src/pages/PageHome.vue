@@ -64,7 +64,7 @@
   </q-page>
 </template>
 <script>
-import { formatDistance } from "date-fns";
+import { formatDistanceStrict } from "date-fns";
 export default {
   name: "PageHome",
   data() {
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     relativeDate(value) {
-      return formatDistance(value, new Date(), { addSuffix: true });
+      return formatDistanceStrict(value, new Date(), { addSuffix: true });
     }
   }
 };
