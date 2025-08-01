@@ -37,10 +37,7 @@
     <q-separator class="divider" size="10px" color="grey-2" />
     <!-- tweetlist -->
     <q-list separator>
-      <q-item
-        v-for="qweet in qweet"
-        :key="qweet.date"
-        class="q-pa-md">
+      <q-item v-for="qweet in qweets" :key="qweet.date" class="q-pa-md">
         <q-item-section avatar>
           <q-avatar size="xl" class="q-mr-sm">
             <img src="https://cdn.quasar.dev/img/avatar5.jpg" />
@@ -58,10 +55,19 @@
             <q-btn flat round size="sm" color="grey" icon="far fa-comment" />
             <q-btn flat round size="sm" color="grey" icon="fas fa-retweet" />
             <q-btn flat round size="sm" color="grey" icon="far fa-heart" />
-            <q-btn flat round size="sm" color="grey" icon="fas fa-trash" />
+            <q-btn
+              @click="deleteQweet(qweet)"
+              flat
+              round
+              size="sm"
+              color="grey"
+              icon="fas fa-trash"
+            />
           </div>
         </q-item-section>
-        <q-item-section side top> {{ relativeDate(qweet.date) }} </q-item-section>
+        <q-item-section side top>
+          {{ relativeDate(qweet.date) }}
+        </q-item-section>
       </q-item>
       <q-separator inset="item" />
     </q-list>
@@ -74,10 +80,10 @@ export default {
   data() {
     return {
       newQweetContent: "",
-      qweet: [
+      qweets: [
         {
           content:
-            "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Let's create something beautiful",
           date: 1754031132848,
         },
         {
@@ -92,14 +98,19 @@ export default {
     relativeDate(value) {
       return formatDistanceStrict(value, new Date(), { addSuffix: true });
     },
-    addNewQweet(){
+    addNewQweet() {
       let newQweet = {
         content: this.newQweetContent,
-        date: Date.now()
-      }
-      this.qweet.unshift(newQweet)
-    }
-  }
+        date: Date.now(),
+      };
+      this.qweets.unshift(newQweet);
+    },
+    deleteQweet(qweet) {
+      let dateToDelete = qweet.date;
+      let index = this.qweets.findIndex((qweet) => qweet.date === dateToDelete);
+      this.qweets.splice(index, 1);
+    },
+  },
 };
 </script>
 <style lang="sass" scoped>
