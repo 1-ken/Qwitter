@@ -1,16 +1,10 @@
 <template>
-  <q-page>
+  <q-page class="reative-position">
+    <q-scroll-area class="absolute fullscreen">
     <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
       <div class="col">
-        <q-input
-          bottom-slots
-          v-model="newQweetContent"
-          placeholder="whats happening"
-          counter
-          autogrow
-          class="newQweet"
-          maxlength="280"
-        >
+        <q-input bottom-slots v-model="newQweetContent" placeholder="whats happening" counter autogrow class="newQweet"
+          maxlength="280">
           <template v-slot:hint>
             {{ 280 - newQweetContent.length }} characters remaining
           </template>
@@ -22,26 +16,15 @@
         </q-input>
       </div>
       <div class="col col-shrink">
-        <q-btn
-          class="q-mb-lg"
-          @click="addNewQweet"
-          no-caps
-          :disable="!newQweetContent.trim() || newQweetContent.length > 280"
-          unelevated
-          rounded
-          color="primary"
-          label="Qweet"
-        />
+        <q-btn class="q-mb-lg" @click="addNewQweet" no-caps
+          :disable="!newQweetContent.trim() || newQweetContent.length > 280" unelevated rounded color="primary"
+          label="Qweet" />
       </div>
     </div>
     <q-separator class="divider" size="10px" color="grey-2" />
     <!-- tweetlist -->
     <q-list separator>
-      <transition-group
-        appear
-        enter-active-class="animated fadeIn slow"
-        leave-active-class="animated fadeOut slow"
-      >
+      <transition-group appear enter-active-class="animated fadeIn slow" leave-active-class="animated fadeOut slow">
         <q-item v-for="qweet in qweets" :key="qweet.date" class="q-pa-md">
           <q-item-section avatar>
             <q-avatar size="xl" class="q-mr-sm">
@@ -49,10 +32,9 @@
             </q-avatar>
           </q-item-section>
           <q-item-section class="text-subtitle1">
-            <q-item-label
-              ><strong>keen ken</strong>
+            <q-item-label><strong>keen ken</strong>
               <span class="text-grey-7">@kee_ken <br class="lt-md"></br>&bull;{{ relativeDate(qweet.date) }}
-</span>
+              </span>
             </q-item-label>
             <q-item-label class="qweet-content text-body1">
               {{ qweet.content }}
@@ -61,14 +43,7 @@
               <q-btn flat round size="sm" color="grey" icon="far fa-comment" />
               <q-btn flat round size="sm" color="grey" icon="fas fa-retweet" />
               <q-btn flat round size="sm" color="grey" icon="far fa-heart" />
-              <q-btn
-                @click="deleteQweet(qweet)"
-                flat
-                round
-                size="sm"
-                color="grey"
-                icon="fas fa-trash"
-              />
+              <q-btn @click="deleteQweet(qweet)" flat round size="sm" color="grey" icon="fas fa-trash" />
             </div>
           </q-item-section>
 
@@ -76,6 +51,7 @@
       </transition-group>
       <q-separator inset="item" />
     </q-list>
+    </q-scroll-area>
   </q-page>
 </template>
 <script>
@@ -132,5 +108,5 @@ export default {
   word-wrap: break-word !important
   overflow-wrap: break-word !important
 .qweet-icons
-  margin-left: -5p
+  margin-left: -5px
 </style>
