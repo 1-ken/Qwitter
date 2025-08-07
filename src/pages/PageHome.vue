@@ -51,7 +51,8 @@
           <q-item-section class="text-subtitle1">
             <q-item-label
               ><strong>keen ken</strong>
-              <span class="text-grey-7">@kee_ken</span>
+              <span class="text-grey-7">@kee_ken <br class="lt-md"></br>&bull;{{ relativeDate(qweet.date) }}
+</span>
             </q-item-label>
             <q-item-label class="qweet-content text-body1">
               {{ qweet.content }}
@@ -70,9 +71,7 @@
               />
             </div>
           </q-item-section>
-          <q-item-section side top>
-            {{ relativeDate(qweet.date) }}
-          </q-item-section>
+
         </q-item>
       </transition-group>
       <q-separator inset="item" />
@@ -81,6 +80,7 @@
 </template>
 <script>
 import { formatDistanceStrict } from "date-fns";
+import { lt } from "date-fns/locale";
 export default {
   name: "PageHome",
   data() {
