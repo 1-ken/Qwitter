@@ -42,7 +42,14 @@
             <div class="qweet-icons row justify-between q-mt-md">
               <q-btn flat round size="sm" color="grey" icon="far fa-comment" />
               <q-btn flat round size="sm" color="grey" icon="fas fa-retweet" />
-              <q-btn flat round size="sm" color="grey" icon="far fa-heart" />
+              <q-btn
+                flat
+                @click="toggledLiked(qweet)"
+                :color="qweet.liked ? 'pink' : 'grey'"
+                :icon="qweet.liked ? 'fas fa-heart': 'far fa-heart'"
+                round
+                size="sm"
+                 />
               <q-btn @click="deleteQweet(qweet)" flat round size="sm" color="grey" icon="fas fa-trash" />
             </div>
           </q-item-section>
@@ -56,7 +63,7 @@
 </template>
 <script>
 import db from 'src/boot/firebase'
-import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore'
+import { collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { formatDistanceStrict } from "date-fns";
 export default {
   name: "PageHome",
@@ -66,13 +73,18 @@ export default {
       qweets: [],
       // qweets: [
       //   {
+      //     id: "1",
       //     content: "Let's create something beautiful",
       //     date: 1754031132848,
+      //     liked: false,
       //   },
       //   {
+      //     id: "2",
       //     content:
       //       "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       //     date: 1754031251805,
+      //     liked: true,
+
       //   },
       // ],
     };
@@ -86,6 +98,7 @@ export default {
         let newQweet = {
           content: this.newQweetContent,
           date: Date.now(),
+          liked: false
         };
         await addDoc(collection(db, "qweets"), newQweet);
         this.newQweetContent = "";
@@ -102,6 +115,23 @@ export default {
         console.error("Error deleting qweet: ", error);
       }
     },
+    async toggledLiked(qweet) {
+      try {
+        if (qweet.id) {
+          // Toggle the liked status
+          const newLikedStatus = !qweet.liked;
+
+          // Update the document in Firestore
+          await updateDoc(doc(db, "qweets", qweet.id), {
+            liked: newLikedStatus
+          });
+
+          console.log(`Qweet ${qweet.id} liked status updated to: ${newLikedStatus}`);
+        }
+      } catch (error) {
+        console.error("Error updating liked status: ", error);
+      }
+    }
   },
   mounted(){
     // Listen for real-time updates to the qweets collection
