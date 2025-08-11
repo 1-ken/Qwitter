@@ -55,44 +55,94 @@
   </q-page>
 </template>
 <script>
+import db from 'src/boot/firebase'
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore'
 import { formatDistanceStrict } from "date-fns";
-import { lt } from "date-fns/locale";
 export default {
   name: "PageHome",
   data() {
     return {
       newQweetContent: "",
-      qweets: [
-        {
-          content: "Let's create something beautiful",
-          date: 1754031132848,
-        },
-        {
-          content:
-            "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          date: 1754031251805,
-        },
-      ],
+      qweets: [],
+      // qweets: [
+      //   {
+      //     content: "Let's create something beautiful",
+      //     date: 1754031132848,
+      //   },
+      //   {
+      //     content:
+      //       "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      //     date: 1754031251805,
+      //   },
+      // ],
     };
   },
   methods: {
     relativeDate(value) {
       return formatDistanceStrict(value, new Date(), { addSuffix: true });
     },
-    addNewQweet() {
-      let newQweet = {
-        content: this.newQweetContent,
-        date: Date.now(),
-      };
-      this.qweets.unshift(newQweet);
-      this.newQweetContent = "";
+    async addNewQweet() {
+      try {
+        let newQweet = {
+          content: this.newQweetContent,
+          date: Date.now(),
+        };
+        await addDoc(collection(db, "qweets"), newQweet);
+        this.newQweetContent = "";
+      } catch (error) {
+        console.error("Error adding qweet: ", error);
+      }
     },
-    deleteQweet(qweet) {
-      let dateToDelete = qweet.date;
-      let index = this.qweets.findIndex((qweet) => qweet.date === dateToDelete);
-      this.qweets.splice(index, 1);
+    async deleteQweet(qweet) {
+      try {
+        if (qweet.id) {
+          await deleteDoc(doc(db, "qweets", qweet.id));
+        }
+      } catch (error) {
+        console.error("Error deleting qweet: ", error);
+      }
     },
   },
+  mounted(){
+    // Listen for real-time updates to the qweets collection
+    const qweetsCollection = collection(db, "qweets");
+    onSnapshot(qweetsCollection, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          console.log("New qweet: ", change.doc.data());
+          const qweetData = {
+            id: change.doc.id,
+            ...change.doc.data()
+          };
+          // Check if qweet already exists to avoid duplicates
+          const existingIndex = this.qweets.findIndex(q => q.id === qweetData.id);
+          if (existingIndex === -1) {
+            this.qweets.unshift(qweetData);
+          }
+        } else if (change.type === "modified") {
+          console.log("Modified qweet: ", change.doc.data());
+          const qweetData = {
+            id: change.doc.id,
+            ...change.doc.data()
+          };
+          const index = this.qweets.findIndex(q => q.id === qweetData.id);
+          if (index !== -1) {
+            this.qweets.splice(index, 1, qweetData);
+          }
+        } else if (change.type === "removed") {
+          console.log("Removed qweet: ", change.doc.data());
+          const qweetId = change.doc.id;
+          const index = this.qweets.findIndex(q => q.id === qweetId);
+          if (index !== -1) {
+            this.qweets.splice(index, 1);
+          }
+        }
+      });
+
+      // Sort qweets by date (newest first)
+      this.qweets.sort((a, b) => b.date - a.date);
+    });
+  }
 };
 </script>
 <style lang="sass" scoped>
