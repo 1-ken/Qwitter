@@ -1,6 +1,6 @@
 <template>
   <q-page class="reative-position">
-    <q-scroll-area class="absolute fullscreen">
+    <q-scroll-area class="absolute full-width full-height">
     <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
       <div class="col">
         <q-input bottom-slots v-model="newQweetContent" placeholder="whats happening" counter autogrow class="newQweet"
@@ -118,15 +118,12 @@ export default {
     async toggledLiked(qweet) {
       try {
         if (qweet.id) {
-          // Toggle the liked status
-          const newLikedStatus = !qweet.liked;
-
           // Update the document in Firestore
           await updateDoc(doc(db, "qweets", qweet.id), {
-            liked: newLikedStatus
+            liked: !qweet.liked
           });
 
-          console.log(`Qweet ${qweet.id} liked status updated to: ${newLikedStatus}`);
+          console.log(`Qweet ${qweet.id} liked status updated to: ${!qweet.liked}`);
         }
       } catch (error) {
         console.error("Error updating liked status: ", error);
